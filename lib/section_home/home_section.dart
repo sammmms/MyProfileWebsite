@@ -5,14 +5,7 @@ class HomeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/images/home_background.jpg"),
-          fit: BoxFit.cover,
-          opacity: 0.2,
-        ),
-      ),
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 64),
       child: Column(
         children: [

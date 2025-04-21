@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:website/components/my_appbar.dart';
 import 'package:website/section_home/home_section.dart';
@@ -43,30 +42,39 @@ class _MainAppState extends State<MainApp> {
         return MaterialApp(
           theme: context.watch<ThemeNotifier>().theme,
           home: Scaffold(
-            body: NestedScrollView(
-              key: _sectionKeys["Home"],
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  StreamBuilder(
-                    stream: _controller.stream,
-                    builder: (context, snapshot) {
-                      return MyAppBar(
-                        selectedHeading: snapshot.data ?? "Home",
-                        onChangeTheme: changeTheme,
-                        onTap: (String heading) {
-                          _controller.sink.add(heading);
-                          _scrollToSection(heading);
-                        },
-                      );
-                    },
-                  )
-                ];
-              },
-              body: const Column(
-                children: [
-                  HomeSection(),
-                  SizedBox(height: 20),
-                ],
+            body: Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/home_background.jpg"),
+                  fit: BoxFit.cover,
+                  opacity: 0.2,
+                ),
+              ),
+              child: NestedScrollView(
+                key: _sectionKeys["Home"],
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    StreamBuilder(
+                      stream: _controller.stream,
+                      builder: (context, snapshot) {
+                        return MyAppBar(
+                          selectedHeading: snapshot.data ?? "Home",
+                          onChangeTheme: changeTheme,
+                          onTap: (String heading) {
+                            _controller.sink.add(heading);
+                            _scrollToSection(heading);
+                          },
+                        );
+                      },
+                    )
+                  ];
+                },
+                body: const Column(
+                  children: [
+                    HomeSection(),
+                    SizedBox(height: 20),
+                  ],
+                ),
               ),
             ),
           ),
