@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:website/components/my_appbar.dart';
-import 'package:website/section_home/home_section.dart';
+import 'package:website/homepage.dart';
 import 'package:website/utils/store.dart';
 import 'package:website/utils/theme_notifier.dart';
 
@@ -24,83 +21,52 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  final StreamController<String> _controller = StreamController<String>();
   final ThemeNotifier _themeNotifier = ThemeNotifier();
 
-  final Map<String, GlobalKey> _sectionKeys = {
-    "Home": GlobalKey(),
-    "Profile": GlobalKey(),
-    "Experience": GlobalKey(),
-    "Education": GlobalKey(),
-    "Projects": GlobalKey(),
-    "Skills": GlobalKey(),
-    "Achievements": GlobalKey(),
-    "Contact": GlobalKey(),
-  };
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _themeNotifier.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: _themeNotifier,
-      child: Builder(builder: (context) {
-        return MaterialApp(
-          theme: context.watch<ThemeNotifier>().theme,
-          home: Scaffold(
-            body: Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/home_background.jpg"),
-                  fit: BoxFit.cover,
-                  opacity: 0.2,
-                  repeat: ImageRepeat.noRepeat,
-                ),
-              ),
-              child: NestedScrollView(
-                key: _sectionKeys["Home"],
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
-                    StreamBuilder(
-                      stream: _controller.stream,
-                      builder: (context, snapshot) {
-                        return MyAppBar(
-                          selectedHeading: snapshot.data ?? "Home",
-                          onChangeTheme: changeTheme,
-                          onTap: (String heading) {
-                            _controller.sink.add(heading);
-                            _scrollToSection(heading);
-                          },
-                        );
-                      },
-                    )
-                  ];
-                },
-                body: const Column(
-                  children: [
-                    HomeSection(),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      }),
+      child: Builder(
+        builder: (context) {
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              scrollBehavior: MyCustomScrollBehavior(),
+              title: "Samuel Onasis | Portfolio",
+              theme: context.watch<ThemeNotifier>().theme,
+              home: const Homepage());
+        },
+      ),
     );
   }
+}
 
-  void changeTheme() {
-    _themeNotifier.changeTheme();
-  }
-
-  void _scrollToSection(String section) {
-    final key = _sectionKeys[section];
-
-    if (key != null && key.currentContext != null) {
-      Scrollable.ensureVisible(
-        key.currentContext!,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
-    }
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Widget buildScrollbar(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    // Replace this with your custom scrollbar
+    return Scrollbar(
+      controller: details.controller,
+      radius: const Radius.circular(8),
+      thickness: 4,
+      interactive: false,
+      thumbVisibility: true, // Force it to be visible
+      child: child,
+    );
   }
 }

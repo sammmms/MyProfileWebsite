@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:website/utils/store.dart';
 
 enum ThemeType {
@@ -96,14 +95,15 @@ class ThemeNotifier extends ChangeNotifier {
   );
 
   ThemeType _themeType = Store.themeType;
+  ThemeType get themeType => _themeType;
+
   bool get isDarkMode => _themeType.isDarkMode;
 
   ThemeData get theme {
     final currentTheme = isDarkMode ? _darkTheme : _lightTheme;
 
     return currentTheme.copyWith(
-      textTheme: currentTheme.textTheme
-          .apply(fontFamily: GoogleFonts.poppins().fontFamily),
+      textTheme: currentTheme.textTheme.apply(fontFamily: 'Poppins'),
     );
   }
 
