@@ -91,8 +91,13 @@ class _MyAppBarState extends State<MyAppBar> {
               child: FittedBox(
                 child: Stack(
                   children: [
-                    AnimatedPositioned(
-                      left: newLeftAlign - (pillWidth / 2),
+                    AnimatedPositioned.fromRect(
+                      rect: Rect.fromLTWH(
+                        newLeftAlign - 48,
+                        pillHeight / 2 - 20,
+                        pillWidth,
+                        pillHeight,
+                      ),
                       duration: const Duration(milliseconds: 300),
                       curve: Curves.easeInOut,
                       child: Container(
@@ -113,7 +118,7 @@ class _MyAppBarState extends State<MyAppBar> {
                             child: Container(
                               key: sectionKeys[headings[i]],
                               // decoration: BoxDecoration(
-                              //   color: selectedHeading == headings[i]
+                              //   color: widget.selectedHeading == headings[i]
                               //       ? Theme.of(context)
                               //           .colorScheme
                               //           .surfaceBright
