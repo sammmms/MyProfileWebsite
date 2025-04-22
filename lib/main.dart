@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:website/components/my_appbar.dart';
 import 'package:website/section_home/home_section.dart';
+import 'package:website/utils/store.dart';
 import 'package:website/utils/theme_notifier.dart';
 
 // This is a Flutter Web Application that are built to show a portfolio of a developer.
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Store.initialize();
   runApp(const MainApp());
 }
 
@@ -48,6 +52,7 @@ class _MainAppState extends State<MainApp> {
                   image: AssetImage("assets/images/home_background.jpg"),
                   fit: BoxFit.cover,
                   opacity: 0.2,
+                  repeat: ImageRepeat.noRepeat,
                 ),
               ),
               child: NestedScrollView(

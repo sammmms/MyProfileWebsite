@@ -1,14 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:website/utils/store.dart';
+
+enum ThemeType {
+  system,
+  light,
+  dark,
+}
+
+extension ThemeTypeExtension on ThemeType {
+  bool get isDarkMode {
+    switch (this) {
+      case ThemeType.dark:
+        return true;
+      case ThemeType.light:
+        return false;
+      case ThemeType.system:
+        return WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark;
+    }
+  }
+
+  String get name {
+    switch (this) {
+      case ThemeType.dark:
+        return "dark";
+      case ThemeType.light:
+        return "light";
+      case ThemeType.system:
+        return "system";
+    }
+  }
+
+  ThemeType get next {
+    return ThemeType.values.indexOf(this) + 1 >= ThemeType.values.length
+        ? ThemeType.values[0]
+        : ThemeType.values[ThemeType.values.indexOf(this) + 1];
+  }
+}
+
+class ThemeTypeUtil {
+  static ThemeType fromString(String value) {
+    switch (value) {
+      case "dark":
+        return ThemeType.dark;
+      case "light":
+        return ThemeType.light;
+      case "system":
+        return ThemeType.system;
+      default:
+        return ThemeType.system;
+    }
+  }
+}
 
 class ThemeNotifier extends ChangeNotifier {
   static const ThemeNotifier? _instance = null;
 
   ThemeNotifier._internal() {
-    final brightness =
-        WidgetsBinding.instance.platformDispatcher.platformBrightness;
-
-    _isDarkMode = brightness == Brightness.dark;
+    _themeType = Store.themeType;
   }
 
   factory ThemeNotifier() {
@@ -45,12 +95,11 @@ class ThemeNotifier extends ChangeNotifier {
     ),
   );
 
-  bool _isDarkMode = true;
-
-  bool get isDarkMode => _isDarkMode;
+  ThemeType _themeType = Store.themeType;
+  bool get isDarkMode => _themeType.isDarkMode;
 
   ThemeData get theme {
-    final currentTheme = _isDarkMode ? _darkTheme : _lightTheme;
+    final currentTheme = isDarkMode ? _darkTheme : _lightTheme;
 
     return currentTheme.copyWith(
       textTheme: currentTheme.textTheme
@@ -59,7 +108,9 @@ class ThemeNotifier extends ChangeNotifier {
   }
 
   void changeTheme() {
-    _isDarkMode = !_isDarkMode;
+    _themeType = _themeType.next;
+
+    Store.isDarkMode = _themeType;
     notifyListeners();
   }
 }

@@ -25,7 +25,7 @@ class HomeSection extends StatelessWidget {
           const SizedBox(height: 16),
           FittedBox(
             child: Text(
-              "Mobile App Developer • Programmer",
+              "Flutter Developer • UI/UX Designer",
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w500,
                     color: Theme.of(context).colorScheme.onSurface,
