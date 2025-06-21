@@ -80,53 +80,58 @@ class MyTimeline extends StatelessWidget {
           height: 150,
           child: Row(
             children: [
-              if (!isEven)
-                Expanded(
-                  child: MyTimelineChild(item: item),
-                )
-              else
-                const Spacer(),
-              LayoutBuilder(builder: (context, constraints) {
-                double lineHeight = constraints.maxHeight;
-                return Column(
-                  children: [
-                    Container(
+              if (!isEven) _buildTimelineChild(item) else const Spacer(),
+              Column(
+                children: [
+                  Expanded(
+                    child: Container(
                       width: 2,
-                      height: lineHeight / 2 - 6,
                       color: Colors.grey,
                     ),
-                    Container(
-                      width: 12,
-                      height: 12,
-                      decoration: const BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
-                      ),
-                      child: HeroIcon(
-                        item.icon,
-                        size: 12,
-                        color: Colors.white,
-                      ),
+                  ),
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: const BoxDecoration(
+                      color: Colors.blue,
+                      shape: BoxShape.circle,
                     ),
-                    Container(
+                    child: HeroIcon(
+                      item.icon,
+                      size: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
                       width: 2,
-                      height: lineHeight / 2 - 6,
                       color: Colors.grey,
                     ),
-                  ],
-                );
-              }),
+                  ),
+                ],
+              ),
               const SizedBox(width: 16),
-              if (isEven)
-                Expanded(
-                  child: MyTimelineChild(item: item),
-                )
-              else
-                const Spacer(),
+              if (isEven) _buildTimelineChild(item) else const Spacer(),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTimelineChild(TimelineItem item) {
+    return Expanded(
+      child: TweenAnimationBuilder<double>(
+        duration: const Duration(milliseconds: 800),
+        tween: Tween(begin: 0.0, end: 1.0),
+        curve: Curves.elasticOut,
+        builder: (context, value, child) {
+          return Transform.scale(
+            scale: value,
+            child: MyTimelineChild(item: item),
+          );
+        },
+      ),
     );
   }
 }

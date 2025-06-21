@@ -24,19 +24,18 @@ class ExperienceSection extends StatelessWidget {
         content: const Text("Contributed to open-source projects."),
       ),
     ];
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Experience",
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
-          const SizedBox(height: 16),
-          MyTimeline(items: items),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Experience",
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        const SizedBox(height: 16),
+        ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: MyTimeline(items: items)),
+      ],
     );
   }
 }
