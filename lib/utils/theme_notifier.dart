@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:website/utils/store.dart';
 
 enum ThemeType {
@@ -32,9 +33,30 @@ extension ThemeTypeExtension on ThemeType {
   }
 
   ThemeType get next {
-    return ThemeType.values.indexOf(this) + 1 >= ThemeType.values.length
-        ? ThemeType.values[0]
-        : ThemeType.values[ThemeType.values.indexOf(this) + 1];
+    ThemeType themeType =
+        ThemeType.values.indexOf(this) + 1 >= ThemeType.values.length
+            ? ThemeType.values[0]
+            : ThemeType.values[ThemeType.values.indexOf(this) + 1];
+
+    if (themeType == ThemeType.system) {
+      return WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+              Brightness.dark
+          ? ThemeType.dark
+          : ThemeType.light;
+    }
+
+    return themeType;
+  }
+
+  HeroIcons get icon {
+    switch (this) {
+      case ThemeType.dark:
+        return HeroIcons.moon;
+      case ThemeType.light:
+        return HeroIcons.sun;
+      case ThemeType.system:
+        return HeroIcons.adjustmentsHorizontal;
+    }
   }
 }
 

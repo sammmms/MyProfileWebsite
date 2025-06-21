@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 
 class ProfileSection extends StatefulWidget {
   const ProfileSection({super.key});
@@ -13,7 +14,7 @@ class _ProfileSectionState extends State<ProfileSection> {
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(
-          maxWidth: 600,
+          maxWidth: 800,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -31,75 +32,81 @@ class _ProfileSectionState extends State<ProfileSection> {
               const SizedBox(
                 height: 32,
               ),
-              Text.rich(
-                const TextSpan(
-                  text: "I'm Samuel, a ",
-                  children: [
-                    TextSpan(
-                      text: "Mobile Developer",
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                    TextSpan(
-                      text:
-                          " focused on building scalable, user-centered applications. With hands-on experience in ",
-                    ),
-                    TextSpan(
-                      text: "Flutter",
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                    TextSpan(
-                      text: " and ",
-                    ),
-                    TextSpan(
-                      text: "Kotlin",
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                    TextSpan(
-                      text:
-                          ", I've created apps that improve workflow efficiency, enhance team collaboration, and reduce manual bottlenecks. From ",
-                    ),
-                    TextSpan(
-                      text: "HR platforms",
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                    TextSpan(
-                      text: " to ",
-                    ),
-                    TextSpan(
-                      text: "industrial tools",
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                    TextSpan(
-                      text: ", I develop solutions that deliver real impact.",
-                    ),
-                  ],
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 600,
                 ),
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: Theme.of(context).colorScheme.onSurface,
+                child: Text(
+                  "A detail-oriented and adaptable full-stack developer with a strong foundation in problem-solving. Currently pursuing a Bachelor of Informatics Engineering at Mikroskil University with a GPA of 3.98. I have a passion for creating efficient and user-friendly applications, with a focus on Flutter and web development. I am eager to contribute my skills to innovative projects and collaborate with teams to deliver high-quality software solutions.",
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).colorScheme.onSurface,
+                        height: 1.8,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(
+                height: 64,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.2),
+                      shape: BoxShape.circle,
                     ),
-                textAlign: TextAlign.center,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "Contact",
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                    ),
+                  ),
+                  Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 32,
               ),
               Wrap(
                 direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
                 runSpacing: 32,
                 spacing: 32,
                 children: [
                   _labelRow(
-                    Icons.location_on_outlined,
+                    HeroIcons.mapPin,
                     "Medan, Indonesia",
                   ),
                   _labelRow(
-                    Icons.email_outlined,
+                    HeroIcons.envelope,
                     "samuelonasis.work@gmail.com",
                   ),
                 ],
               ),
               const SizedBox(
-                height: 48,
+                height: 64,
               ),
             ],
           ),
@@ -108,14 +115,15 @@ class _ProfileSectionState extends State<ProfileSection> {
     );
   }
 
-  Widget _labelRow(IconData icon, String text) {
+  Widget _labelRow(HeroIcons icon, String text) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
+        HeroIcon(
           icon,
           color: Theme.of(context).colorScheme.primary,
           size: 32,
+          style: HeroIconStyle.solid,
         ),
         const SizedBox(
           width: 16,

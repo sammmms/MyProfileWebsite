@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:website/components/my_appbar.dart';
+import 'package:website/sections/experience_section.dart';
 import 'package:website/sections/home_section.dart';
 import 'package:website/sections/profile_section.dart';
 import 'package:website/utils/section_headers.dart';
@@ -14,7 +15,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  final StreamController<String> _controller = StreamController<String>();
+  final StreamController<String> _headerController = StreamController<String>();
   final ScrollController _scrollController = ScrollController();
   final Map<String, GlobalKey> _sectionKeys = SectionHeaders.sectionKeys;
 
@@ -29,7 +30,7 @@ class _HomepageState extends State<Homepage> {
     super.dispose();
     _scrollController.removeListener(_scrolledHeaderListener);
     _scrollController.dispose();
-    _controller.close();
+    _headerController.close();
   }
 
   @override
@@ -47,21 +48,21 @@ class _HomepageState extends State<Homepage> {
         child: CustomScrollView(
           controller: _scrollController,
           slivers: [
-            StreamBuilder(
-              stream: _controller.stream,
+            StreamBuilder<String>(
+              stream: _headerController.stream,
               builder: (context, snapshot) {
                 return MyAppBar(
                   selectedHeading: snapshot.data ?? "Home",
                   onTap: (String heading) {
-                    _controller.sink.add(heading);
+                    _headerController.sink.add(heading);
                     _scrollToSection(heading);
                   },
                 );
               },
             ),
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: HomeSection(
-                key: Key("Home"),
+                key: _sectionKeys["Home"],
               ),
             ),
             SliverPadding(
@@ -84,15 +85,10 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
             SliverToBoxAdapter(
-              child: SizedBox(
-                height: 256,
-                child: VerticalDivider(
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
-                  thickness: 3,
-                  width: 64,
-                ),
+              child: ExperienceSection(
+                key: _sectionKeys["Experience"],
               ),
-            ),
+            )
           ],
         ),
       ),
@@ -112,7 +108,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   void _scrolledHeaderListener() {
-    for (var entry in SectionHeaders.headings.reversed) {
+    for (var entry in SectionHeaders.title.reversed) {
       final key = _sectionKeys[entry];
 
       if (key?.currentContext != null) {
@@ -124,7 +120,7 @@ class _HomepageState extends State<Homepage> {
           final offset = box.localToGlobal(Offset.zero).dy;
 
           if (offset < 500) {
-            _controller.sink.add(entry);
+            _headerController.sink.add(entry);
             break;
           }
         }

@@ -29,7 +29,8 @@ class _HomeSectionState extends State<HomeSection>
                 padding: const EdgeInsets.all(8.0),
                 child: CircleAvatar(
                   radius: 200,
-                  // backgroundImage: const AssetImage("assets/images/profile.jpg"),
+                  backgroundImage:
+                      const AssetImage("assets/images/profile_image.png"),
                   backgroundColor: Theme.of(context).colorScheme.surfaceBright,
                 ),
               ),
@@ -49,7 +50,7 @@ class _HomeSectionState extends State<HomeSection>
           _tweenAnimationBuilder(
             child: FittedBox(
               child: Text(
-                "Flutter Developer • UI/UX Designer",
+                "Flutter Developer • Full Stack Developer",
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.onSurface,

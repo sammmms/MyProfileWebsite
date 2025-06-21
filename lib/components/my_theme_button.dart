@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 import 'package:provider/provider.dart';
 import 'package:website/utils/theme_notifier.dart';
 
@@ -26,8 +27,10 @@ class _MyThemeButtonState extends State<MyThemeButton>
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = context.watch<ThemeNotifier>().isDarkMode;
     return Tooltip(
-      message: "🌟 Tap to toggle theme!",
+      message:
+          "${isDarkMode ? "☀️" : "🌙"} - Change the website looks to ${isDarkMode ? "Light" : "Dark"} Mode",
       child: GestureDetector(
         onTap: () {
           context.read<ThemeNotifier>().changeTheme();
@@ -44,19 +47,6 @@ class _MyThemeButtonState extends State<MyThemeButton>
   Widget _getThemeIcon() {
     ThemeType themeType = context.watch<ThemeNotifier>().themeType;
 
-    IconData iconData;
-    switch (themeType) {
-      case ThemeType.dark:
-        iconData = Icons.dark_mode;
-        break;
-      case ThemeType.light:
-        iconData = Icons.light_mode;
-        break;
-      case ThemeType.system:
-        iconData = Icons.auto_awesome_mosaic;
-        break;
-    }
-
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
@@ -71,8 +61,8 @@ class _MyThemeButtonState extends State<MyThemeButton>
           child: child,
         );
       },
-      child: Icon(
-        iconData,
+      child: HeroIcon(
+        themeType.next.icon,
         color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
       ),
     );
